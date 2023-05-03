@@ -58,7 +58,7 @@ fn main() {
     println!("cargo:rerun-if-changed=./wrapper.c");
 
     Command::new("ar")
-        .args(&["cr", "libwrapper.a", "wrapper.o"])
+        .args(&["cr", "libwrapper.a", "wrapper.o", "../libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o"])
         .status()
         .expect("Failed to archive wrapper.a");
 
