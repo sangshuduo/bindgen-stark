@@ -1,6 +1,15 @@
+#ifndef _WRAPPER_H_
+#define _WRAPPER_H_
+
 #include "BairWitness.hpp"
 #include "BairWitnessChecker_UTEST.hpp"
 
-std::pair<libstark::BairInstance,libstark::BairWitness> wrapper_generate_valid_constraints() {
-    return PCP_UTESTS::generate_valid_constraints();
+typedef struct wrap_bair_s {
+    libstark::BairInstance *instance;
+    libstark::BairWitness *witness;
+} Bair;
+
+extern "C" {
+    Bair *wrap_bair();
 }
+#endif  // _WRAPPER_H_
