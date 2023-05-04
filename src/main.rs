@@ -2,16 +2,13 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-// include!("../bair_bindings2.rs");
-
-//use self::root;
-
 #[allow(non_snake_case, non_camel_case_types, non_upper_case_globals)]
 pub mod root {
     use self::super::root;
     pub mod std {
         #[allow(unused_imports)]
         use self::super::super::root;
+        use std::os::raw::c_void;
         #[repr(C)]
         #[derive(Debug, Copy, Clone)]
         pub struct allocator_traits {
@@ -20,7 +17,7 @@ pub mod root {
         #[repr(C)]
         #[derive(Debug)]
         pub struct __compressed_pair {
-            pub _address: u8,
+            pub _address: *mut c_void,
         }
         #[repr(C)]
         #[derive(Debug)]
@@ -74,6 +71,8 @@ pub mod root {
         pub struct Sequence {
             pub vtable_: *const Sequence__bindgen_vtable,
         }
+        #[repr(C)]
+        #[derive(Debug)]
         pub struct BairWitness {
             pub assignment_: root::libstark::BairWitness_assignment_ptr,
             pub permutation_: root::libstark::BairWitness_permutation_ptr,
@@ -100,9 +99,11 @@ pub mod root {
     }
 }
 
+#[repr(C)]
+#[derive(Debug)]
 pub struct Bair {
-    pub instance: *mut root::libstark::BairInstance,
-    pub witness: *mut root::libstark::BairWitness,
+    pub instance: root::libstark::BairInstance,
+    pub witness: root::libstark::BairWitness,
 }
 
 #[link(name = "wrapper")]
@@ -113,6 +114,7 @@ extern "C" {
 fn main() {
     println!("Hello, world!");
     unsafe {
-        wrap_bair();
+        let ptr = wrap_bair();
+        dbg!(&*ptr);
     }
 }

@@ -36,6 +36,11 @@ fn main() {
     let omp_header_path = PathBuf::from("/usr/local/Cellar/libomp/16.0.2/include/");
     cc::Build::new()
         .file("./wrapper.c")
+        .file("../libSTARK/libstark-tests/BairWitnessChecker_UTEST.cpp")
+        .file("../libSTARK/libstark-tests/lightCircLib/lightCircPoly.cpp")
+        .file("../libSTARK/libstark-tests/lightCircLib/lightCircuit.cpp")
+        .file("../libSTARK/libstark-tests/lightCircLib/lightCircGate.cpp")
+        .compiler("g++")
         .flag("-O3")
         .flag("-g")
         .flag("-Wall")
@@ -65,6 +70,15 @@ fn main() {
     println!("cargo:rustc-link-search=native={}", pwd.display());
 //    println!("cargo:rustc-link-lib=BairWitnessChecker_UTEST");
     println!("cargo:rustc-link-lib=wrapper");
+    println!("cargo:rustc-link-search=../libSTARK/bin/libstark");
+    println!("cargo:rustc-link-lib=stark");
+    println!("cargo:rustc-link-search=../libSTARK/bin/fft");
+    println!("cargo:rustc-link-lib=FFT");
+    println!("cargo:rustc-link-search=../libSTARK/bin/algebralib");
+    println!("cargo:rustc-link-lib=algebralib");
+    println!("cargo:rustc-link-search=/usr/local/Cellar/libomp/16.0.2/lib");
+    println!("cargo:rustc-link-lib=omp");
+    println!("cargo:rustc-link-lib=gtest");
     println!("cargo:rustc-link-arg=-Wl");
 
     // This is the path to the `c` headers file.
@@ -97,5 +111,4 @@ fn main() {
     bindings
         .write_to_file(out_path)
         .expect("Couldn't write bindings!");
-
 }

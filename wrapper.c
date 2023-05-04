@@ -1,21 +1,13 @@
 #include "wrapper.h"
+#include <memory>
 
 using std::pair;
 
 extern "C" {
 
-Bair *wrap_bair() {
-    Bair *bair = (Bair *)malloc(sizeof(Bair));
-    pair<libstark::BairInstance, libstark::BairWitness> retPair = PCP_UTESTS::generate_valid_constraints();
-    bair->instance = &retPair.first;
-    bair->witness = &retPair.second;
-    return bair;
-}
-
-void free_bair(Bair *bair) {
-    delete bair->instance;
-    delete bair->witness;
-    free(bair);
+std::unique_ptr<pair<libstark::BairInstance, libstark::BairWitness>> wrap_bair() {
+    return std::make_unique<pair<libstark::BairInstance, libstark::BairWitness>>(PCP_UTESTS::generate_valid_constraints());
 }
 
 }
+

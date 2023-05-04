@@ -10,6 +10,6 @@ typedef struct wrap_bair_s {
 } Bair;
 
 extern "C" {
-    Bair *wrap_bair();
+    std::unique_ptr<std::pair<libstark::BairInstance, libstark::BairWitness>> wrap_bair();
 }
 #endif  // _WRAPPER_H_
