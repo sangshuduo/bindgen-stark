@@ -1,0 +1,4 @@
+[submodule "libSTARK"]
+	path = libSTARK
+	url = https://github.com/sangshuduo/libSTARK
+	branch = fix-macOS-compile
