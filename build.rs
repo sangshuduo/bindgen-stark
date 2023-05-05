@@ -35,7 +35,7 @@ fn main() {
     let fft_header_path = PathBuf::from("./libSTARK/algebra/FFT/src/");
     let omp_header_path = PathBuf::from("/usr/local/Cellar/libomp/16.0.2/include/");
     cc::Build::new()
-        .file("./wrapper.c")
+        .file("./wrapper.cpp")
         .file("./libSTARK/libstark-tests/BairWitnessChecker_UTEST.cpp")
         .file("./libSTARK/libstark-tests/lightCircLib/lightCircPoly.cpp")
         .file("./libSTARK/libstark-tests/lightCircLib/lightCircuit.cpp")
@@ -60,7 +60,7 @@ fn main() {
         .include(omp_header_path)
         .cpp(true)
         .compile("wrapper");
-    println!("cargo:rerun-if-changed=./wrapper.c");
+    println!("cargo:rerun-if-changed=./wrapper.cpp");
 
     Command::new("ar")
         .args(&["cr", "libwrapper.a", "wrapper.o", "./libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o"])
