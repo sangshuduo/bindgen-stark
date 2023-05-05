@@ -7,7 +7,7 @@ use std::process::Command;
 use bindgen::CargoCallbacks;
 
 fn main() {
-    let libstark = PathBuf::from("../libSTARK/bin/libstark/")
+    let libstark = PathBuf::from("./libSTARK/bin/libstark/")
         .canonicalize()
         .expect("Failed to canonicalize libstark");
 
@@ -18,7 +18,7 @@ fn main() {
         .args(&[
             "cr",
             "libBairWitnessChecker_UTEST.a",
-            "../libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o",
+            "./libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o",
         ])
         .status()
         .expect("Failed to archive BairWitnessChecker_UTEST");
@@ -27,19 +27,19 @@ fn main() {
         .canonicalize()
         .expect("Failed to canonicalize libstark_tests");
 
-    let libstark_src = PathBuf::from("../libSTARK/libstark/src/");
-    let libstark_tests = PathBuf::from("../libSTARK/libstark-tests/");
-    let bin_libstark_tests = PathBuf::from("../libSTARK/bin/libstark-tests/");
-    let bair_path = PathBuf::from("../libSTARK//libstark/src/languages/Bair/");
-    let algebralib_headers_path = PathBuf::from("../libSTARK/algebra/algebralib/headers");
-    let fft_header_path = PathBuf::from("../libSTARK/algebra/FFT/src/");
+    let libstark_src = PathBuf::from("./libSTARK/libstark/src/");
+    let libstark_tests = PathBuf::from("./libSTARK/libstark-tests/");
+    let bin_libstark_tests = PathBuf::from("./libSTARK/bin/libstark-tests/");
+    let bair_path = PathBuf::from("./libSTARK//libstark/src/languages/Bair/");
+    let algebralib_headers_path = PathBuf::from("./libSTARK/algebra/algebralib/headers");
+    let fft_header_path = PathBuf::from("./libSTARK/algebra/FFT/src/");
     let omp_header_path = PathBuf::from("/usr/local/Cellar/libomp/16.0.2/include/");
     cc::Build::new()
         .file("./wrapper.c")
-        .file("../libSTARK/libstark-tests/BairWitnessChecker_UTEST.cpp")
-        .file("../libSTARK/libstark-tests/lightCircLib/lightCircPoly.cpp")
-        .file("../libSTARK/libstark-tests/lightCircLib/lightCircuit.cpp")
-        .file("../libSTARK/libstark-tests/lightCircLib/lightCircGate.cpp")
+        .file("./libSTARK/libstark-tests/BairWitnessChecker_UTEST.cpp")
+        .file("./libSTARK/libstark-tests/lightCircLib/lightCircPoly.cpp")
+        .file("./libSTARK/libstark-tests/lightCircLib/lightCircuit.cpp")
+        .file("./libSTARK/libstark-tests/lightCircLib/lightCircGate.cpp")
         .compiler("g++")
         .flag("-O3")
         .flag("-g")
@@ -63,18 +63,18 @@ fn main() {
     println!("cargo:rerun-if-changed=./wrapper.c");
 
     Command::new("ar")
-        .args(&["cr", "libwrapper.a", "wrapper.o", "../libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o"])
+        .args(&["cr", "libwrapper.a", "wrapper.o", "./libSTARK/bin/libstark-tests/obj/BairWitnessChecker_UTEST.o"])
         .status()
         .expect("Failed to archive wrapper.a");
 
     println!("cargo:rustc-link-search=native={}", pwd.display());
 //    println!("cargo:rustc-link-lib=BairWitnessChecker_UTEST");
     println!("cargo:rustc-link-lib=wrapper");
-    println!("cargo:rustc-link-search=../libSTARK/bin/libstark");
+    println!("cargo:rustc-link-search=./libSTARK/bin/libstark");
     println!("cargo:rustc-link-lib=stark");
-    println!("cargo:rustc-link-search=../libSTARK/bin/fft");
+    println!("cargo:rustc-link-search=./libSTARK/bin/fft");
     println!("cargo:rustc-link-lib=FFT");
-    println!("cargo:rustc-link-search=../libSTARK/bin/algebralib");
+    println!("cargo:rustc-link-search=./libSTARK/bin/algebralib");
     println!("cargo:rustc-link-lib=algebralib");
     println!("cargo:rustc-link-search=/usr/local/Cellar/libomp/16.0.2/lib");
     println!("cargo:rustc-link-lib=omp");
@@ -94,12 +94,12 @@ fn main() {
         .allowlist_function("PCP_UTESTS::generate_valid_constraints*")
         .blocklist_function("PCP_UTESTS::generate_invalid*")
         .blocklist_function("verify_*")
-        .clang_arg("-I../libSTARK/libstark-tests/")
-        .clang_arg("-I../libSTARK/libstark/src/")
-        .clang_arg("-I../libSTARK/libstark/src/languages/Bair/")
-        .clang_arg("-I../libSTARK/algebra/algebralib/headers/")
-        .clang_arg("-I../libSTARK/algebra/algebralib/headers/algebraLib/")
-        .clang_arg("-I../libSTARK/algebra/FFT/src/")
+        .clang_arg("-I./libSTARK/libstark-tests/")
+        .clang_arg("-I./libSTARK/libstark/src/")
+        .clang_arg("-I./libSTARK/libstark/src/languages/Bair/")
+        .clang_arg("-I./libSTARK/algebra/algebralib/headers/")
+        .clang_arg("-I./libSTARK/algebra/algebralib/headers/algebraLib/")
+        .clang_arg("-I./libSTARK/algebra/FFT/src/")
         .clang_arg("-I/usr/local/Cellar/libomp/16.0.2/include/")
         .clang_arg("-xc++")
         .clang_arg("-std=c++14")
