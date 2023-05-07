@@ -33,7 +33,7 @@ fn main() {
     let bair_path = PathBuf::from("./libSTARK//libstark/src/languages/Bair/");
     let algebralib_headers_path = PathBuf::from("./libSTARK/algebra/algebralib/headers");
     let fft_header_path = PathBuf::from("./libSTARK/algebra/FFT/src/");
-    let omp_header_path = PathBuf::from("/usr/local/Cellar/libomp/16.0.2/include/");
+    let omp_header_path = PathBuf::from("/usr/local/opt/libomp/include/");
     cc::Build::new()
         .file("./wrapper.cpp")
         .file("./libSTARK/libstark-tests/BairWitnessChecker_UTEST.cpp")
@@ -76,7 +76,7 @@ fn main() {
     println!("cargo:rustc-link-lib=FFT");
     println!("cargo:rustc-link-search=./libSTARK/bin/algebralib");
     println!("cargo:rustc-link-lib=algebralib");
-    println!("cargo:rustc-link-search=/usr/local/Cellar/libomp/16.0.2/lib");
+    println!("cargo:rustc-link-search=/usr/local/opt/libomp/lib");
     println!("cargo:rustc-link-lib=omp");
     println!("cargo:rustc-link-lib=gtest");
     println!("cargo:rustc-link-arg=-Wl");
@@ -100,7 +100,7 @@ fn main() {
         .clang_arg("-I./libSTARK/algebra/algebralib/headers/")
         .clang_arg("-I./libSTARK/algebra/algebralib/headers/algebraLib/")
         .clang_arg("-I./libSTARK/algebra/FFT/src/")
-        .clang_arg("-I/usr/local/Cellar/libomp/16.0.2/include/")
+        .clang_arg("-I/usr/local/opt/libomp/include/")
         .clang_arg("-xc++")
         .clang_arg("-std=c++14")
         .parse_callbacks(Box::new(CargoCallbacks))
